@@ -1,12 +1,40 @@
-import Head from 'next/head'
-import dynamic from 'next/dynamic'
+import { lazy, Suspense, useEffect, useState } from "react";
 
-// @ts-ignore
-const Counter = dynamic(() => import('remote/Counter'), {
-  ssr: false,
-})
+import Head from "next/head";
+import dynamic from "next/dynamic";
+
+import { Loading } from "../components/loading";
+
+import { importRemote } from "@module-federation/utilities";
+
+//@ts-ignore
+const Counter = dynamic(() => import("remote/Counter"));
 
 export default function Home() {
+  // @ts-ignore
+  // The following does not work as the internal state is lost after re-rendering of Home
+  // const Counter = dynamic(() => import('remote/Counter'))
+
+  // @ts-ignore
+  // The following DOES work, but the suspense component goes to "fallback" in each re-rendering of Home
+  // let counter = 'Counter';
+  // const Counter = lazy(() => import('remote/Counter'))
+
+  // @ts-ignore
+  // Another way to use the module federation
+  // const remoteScope = "remote"
+  // const remoteModule = "Counter"
+  // const Counter = lazy(
+  //   () =>
+  //     importRemote({
+  //       url: "https://module-federation-example-rho.vercel.app",
+  //       scope: remoteScope,
+  //       module: remoteModule,
+  //     })
+  // );
+
+  const [value, setValue] = useState(false);
+
   return (
     <div>
       <Head>
@@ -15,7 +43,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>NEXT-JS HOST</div>
-      <Counter />
+      <section>
+        <header>This is the suspense:</header>
+        <Counter />
+      </section>
+      <br />
+      <section>
+        <header>This is a diferent component changing current state</header>
+        <button onClick={() => setValue((v) => !v)}>
+          Toggle {value ? "on" : "off"}
+        </button>
+      </section>
+      <br />
+      <section>
+        <header>Changing state inside other component</header>
+        <Loading />
+      </section>
     </div>
-  )
+  );
 }

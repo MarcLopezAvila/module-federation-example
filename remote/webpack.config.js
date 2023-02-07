@@ -1,6 +1,6 @@
 const path = require('path');
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-const { dependencies } = require('./package.json');
+const {dependencies} = require('./package.json');
 
 // Constant with our paths
 const paths = {
@@ -10,14 +10,14 @@ const paths = {
 };
 
 const developmentMode = process.env.NODE_ENV === 'development';
-const exposeAsMF = !!process.env.MF;
+const exposeAsMF = true;
 
 module.exports = {
   entry: path.join(paths.SRC, 'index.js'),
   output: {
     path: paths.DIST,
     filename: 'remote.js',
-    publicPath: 'https://module-federation-example-rho.vercel.app/',
+    publicPath: 'http://localhost:3001/',
   },
   module: {
     rules: [
@@ -32,6 +32,9 @@ module.exports = {
     port: 3001,
     hot: false,
     historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    }
   },
   plugins: [],
   resolve: {
@@ -46,7 +49,8 @@ if (exposeAsMF) {
     name: "remote",
     filename: "remoteEntry.js",
     exposes: {
-      './Counter': './src/index.js',
+      './Counter': './src/Counter.js',
+      './Loading': './src/Loading.js'
     },
     shared: dependencies,
   });
