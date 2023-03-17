@@ -17,7 +17,7 @@ module.exports = {
   output: {
     path: paths.DIST,
     filename: 'remote.js',
-    publicPath: 'https://module-federation-example-rho.vercel.app/',
+    publicPath: 'http://localhost:3001/',
   },
   module: {
     rules: [
@@ -32,6 +32,9 @@ module.exports = {
     port: 3001,
     hot: false,
     historyApiFallback: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    }
   },
   plugins: [],
   resolve: {
