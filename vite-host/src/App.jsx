@@ -1,7 +1,7 @@
-import { useState, Suspense, lazy } from 'react'
+import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 
-const Components = await import("remote/Counter")
+const Components = false ? await import("remote/Counter") : {};
 
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -12,9 +12,7 @@ function App() {
 
   return (
     <div className="App">
-      <Suspense fallback={null}>
-        <Counter />
-      </Suspense>
+      {Counter && <Counter />}
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

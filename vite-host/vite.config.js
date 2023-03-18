@@ -21,4 +21,7 @@ export default defineConfig({
       shared: dependencies,
     }),
   ],
+  build: {
+    target: 'esnext'
+  }
 })
