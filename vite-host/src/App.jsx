@@ -1,12 +1,14 @@
 import { useState, Suspense, lazy } from 'react'
 import reactLogo from './assets/react.svg'
+
+const Components = await import("remote/Counter")
+
 import viteLogo from '/vite.svg'
 import './App.css'
 
-const Counter = lazy(() => import('remote/Counter'));
-
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const { Counter } = Components;
 
   return (
     <div className="App">

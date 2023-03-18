@@ -10,3 +10,6 @@ export const render = (node, props = {}) => {
 window.render = render;
 
 export default Counter;
+
+export { Counter };
+
